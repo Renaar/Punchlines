@@ -1,0 +1,19 @@
+
+
+--- LES PUNCHLINES ---
+
+Base de données des punchlines, sous forme de fichier .CSV
+    Voir comment utiliser un fichier .CSV dans un code python.
+
+
+--- LOGIQUE DU JEU ---
+
+    Liste des punchlines connues
+        Affiche la liste des punchlines que le joueur connait.
+    Choix de l'adversaire
+        Choisit un adversaire à affronter parmi plusieurs.
+        Lance le combat contre cet adversaire après l'avoir choisit.
+    Le combat final
+        Boss final qui nécessite un grand nombre de punchlines différentes, qu'il faut apprendre auprès des adversaires précédents.
+
+

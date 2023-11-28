@@ -1,0 +1,9 @@
+Création de la boucle principale du jeu :
+    Initialisation de Pygame : pygame.init() initialise le module Pygame.
+    Définir la taille de la fenêtre : Utilisez pygame.display.set_mode pour créer une fenêtre de jeu de la taille souhaitée.
+    Boucle principale du jeu : La boucle while True est la boucle principale du jeu qui continue indéfiniment.
+    Gestion des événements : La partie for event in pygame.event.get() gère les événements Pygame, tels que la fermeture de la fenêtre.
+    Effacer l'écran : fenetre.fill((255, 255, 255)) remplit l'écran avec une couleur (blanche ici). Cela efface l'écran à chaque itération de la boucle.
+    Dessiner d'autres éléments : Ajoutez du code pour dessiner les éléments spécifiques à votre jeu, tels que les personnages, le texte, etc.
+    Mettre à jour l'affichage : pygame.display.flip() met à jour l'affichage pour montrer les modifications apportées à l'écran.
+    Quitter Pygame : Lorsque l'utilisateur ferme la fenêtre, pygame.quit() et sys.exit() sont utilisés pour quitter proprement le programme.

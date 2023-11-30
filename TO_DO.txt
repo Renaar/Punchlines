@@ -17,3 +17,8 @@ Base de données des punchlines, sous forme de fichier .CSV
         Boss final qui nécessite un grand nombre de punchlines différentes, qu'il faut apprendre auprès des adversaires précédents.
 
 
+Il faut 3 listes :
+Cela va faciliter la distribution entre tous les persos.
+    1 liste avec toutes les punchlines.
+    1 liste avec toutes les réponses.
+    1 liste [punchline, réponse]. (Elle permet de savoir vérifier l'issue d'une manche)

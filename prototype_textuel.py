@@ -164,7 +164,7 @@ def duel(joueur_punchlines, joueur_reponses, ennemi_punchlines, ennemi_reponses)
         punchlines_ennemi_non_utilisees.extend(punchlines_ennemi_utilisees)
         punchlines_ennemi_utilisees.clear()
         effacer_terminal()
-        
+
     elif score_joueur == 3:
         print(f"{Fore.YELLOW}Bravo, tu as gagné ce duel !")
         punchlines_ennemi_non_utilisees.extend(punchlines_ennemi_utilisees)
@@ -185,6 +185,7 @@ while choix_action != 5:
     if choix_action == 1:
         punchlines_reponses_connues = []
         effacer_terminal()
+        # Ceci permet de n'afficher que les punchlines ou les réponses connues.
         for punchline, reponse in punchlines_reponses.items():
             if punchline in punchlines_joueur and reponse in reponses_joueur:
                 punchlines_reponses_connues.append((punchline, reponse))
@@ -194,16 +195,17 @@ while choix_action != 5:
                 punchlines_reponses_connues.append(("Punchline non apprise", reponse))
             else:
                 punchlines_reponses_connues.append(("Punchline non apprise", "Réponse non apprise"))
-
+        print(f"- Punchlines -".ljust(64, '.') + "- Réponses -")
+        print()
         for index, i in enumerate(punchlines_reponses_connues, start=1):
             if i[0] == "Punchline non apprise" and i[1] == "Réponse non apprise":
-                print(f"{index}) {Fore.RED}{i[0]} / {Fore.RED}{i[1]}")
+                print(f"{index}) {Fore.RED}{i[0].ljust(60, '.')} / {Fore.RED}{i[1]}")
             elif i[0] != "Punchline non apprise" and i[1] == "Réponse non apprise":
-                print(f"{index}) {Fore.GREEN}{i[0]} / {Fore.RED}{i[1]}")
+                print(f"{index}) {Fore.GREEN}{i[0].ljust(60, '.')} / {Fore.RED}{i[1]}")
             elif i[0] == "Punchline non apprise" and i[1] != "Réponse non apprise":
-                print(f"{index}) {Fore.RED}{i[0]} / {Fore.GREEN}{i[1]}")
+                print(f"{index}) {Fore.RED}{i[0].ljust(60, '.')} / {Fore.GREEN}{i[1]}")
             elif i[0] != "Punchline non apprise" and i[1] != "Réponse non apprise":
-                print(f"{index}) {Fore.GREEN}{i[0]} / {Fore.GREEN}{i[1]}")
+                print(f"{index}) {Fore.GREEN}{i[0].ljust(60, '.')} / {Fore.GREEN}{i[1]}")
         attendre_entree()
         effacer_terminal()
 

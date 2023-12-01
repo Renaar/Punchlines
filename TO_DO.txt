@@ -1,20 +1,31 @@
-
-
 --- LES PUNCHLINES ---
 
 Base de données des punchlines, sous forme de fichier .CSV
-    Voir comment utiliser un fichier .CSV dans un code python.
+Base de données des réponses, sous forme de fichier .csv
+Base de données des punchlines-réponses, sous forme de fichier.csv, pour vérifier si c'est la bonne réponse à une punchline.
 
-
---- LOGIQUE DU JEU ---
+--- MENU DU JEU ---
 
     Liste des punchlines connues
         Affiche la liste des punchlines que le joueur connait.
     Choix de l'adversaire
-        Choisit un adversaire à affronter parmi plusieurs.
+        Choisit un adversaire à affronter parmi 4 adversaires.
         Lance le combat contre cet adversaire après l'avoir choisit.
     Le combat final
         Boss final qui nécessite un grand nombre de punchlines différentes, qu'il faut apprendre auprès des adversaires précédents.
+
+--- LOGIQUE DU JEU ---
+
+    Il y a un total de 12 punchlines et de 12 réponses à ces punchlines. Une réponse ne fonctionne que contre une punchline donnée.
+    Au début de la partie, les 12 punchlines et 12 réponses sont réparties aléatoirement entre 4 adversaires.
+    Le joueur ne connait qu'une punchline basique et 1 réponse basique, mais qui sont sans effet contre ses adversaires.
+    Il va devoir affronter les autres pour apprendre les punchlines et les réponses.
+    Lorsque l'adversaire lui envoi une punchline que le joueur ne connait pas, il l'apprend et peut l'utiliser ensuite.
+    C'est pareil pour les réponses.
+    Le joueur passe par plusieurs phases :
+        - Apprendre les punchlines.
+        - Apprendre les réponses.
+    Le joueur a besoin des réponses pour affronter le boss.
 
 
 Il faut 3 listes :

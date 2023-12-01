@@ -5,6 +5,14 @@ from colorama import Fore, Back, Style, init
 
 init(autoreset=True)
 
+# Fonction pour effacer l'écran
+def effacer_terminal():
+    print(Fore.RESET + '\033c', end='')
+
+# Fonction pour attendre la validation du joueur
+def attendre_entree():
+    input("Appuyez sur Entree pour continuer...")
+
 # Fonction pour lire les données d'un fichier CSV et créer un dictionnaire
 def lire_csv_dictionnaire(file_path):
     donnees_csv = {}
@@ -107,6 +115,7 @@ def duel(joueur_punchlines, joueur_reponses, ennemi_punchlines, ennemi_reponses)
     punchlines_ennemi_utilisees = []
 
     while score_joueur < 3 and score_ennemi < 3:
+        effacer_terminal()
         print(f"{Fore.YELLOW}--- Manche {compteur_manche} ---")
         punchline_ennemi = random.choice(punchlines_ennemi_non_utilisees)
         print(f"{Fore.YELLOW}Ennemi dit : {Fore.RED}{punchline_ennemi}")
@@ -138,27 +147,31 @@ def duel(joueur_punchlines, joueur_reponses, ennemi_punchlines, ennemi_reponses)
             compteur_manche += 1
             print()
             print(f"{Fore.CYAN}Joueur : {score_joueur} {Fore.YELLOW}/ {Fore.RED}Ennemi : {score_ennemi}")
+            attendre_entree()
         else:
             print(f"{Fore.RED}Tu peux mieux faire, tocard.")
             score_ennemi += 1
             compteur_manche += 1
             print()
             print(f"{Fore.CYAN}Joueur : {score_joueur} {Fore.YELLOW}/ {Fore.RED}Ennemi : {score_ennemi}")
+            attendre_entree()
 
         punchlines_ennemi_non_utilisees.remove(punchline_ennemi)
         punchlines_ennemi_utilisees.append(punchline_ennemi)
-        print()
     
     if score_ennemi == 3:
         print(f"{Fore.YELLOW}Tu as perdu ce duel...")
         punchlines_ennemi_non_utilisees.extend(punchlines_ennemi_utilisees)
         punchlines_ennemi_utilisees.clear()
+        effacer_terminal()
+        
     elif score_joueur == 3:
         print(f"{Fore.YELLOW}Bravo, tu as gagné ce duel !")
         punchlines_ennemi_non_utilisees.extend(punchlines_ennemi_utilisees)
         punchlines_ennemi_utilisees.clear()
+        effacer_terminal()
 
-print()
+effacer_terminal()
 print("--- C'est l'heure des PUNCHLINES !!! ---")
 print()
 
@@ -171,7 +184,7 @@ while choix_action != 5:
     #Traitement en fonction des choix
     if choix_action == 1:
         punchlines_reponses_connues = []
-
+        effacer_terminal()
         for punchline, reponse in punchlines_reponses.items():
             if punchline in punchlines_joueur and reponse in reponses_joueur:
                 punchlines_reponses_connues.append((punchline, reponse))
@@ -191,6 +204,8 @@ while choix_action != 5:
                 print(f"{index}) {Fore.RED}{i[0]} / {Fore.GREEN}{i[1]}")
             elif i[0] != "Punchline non apprise" and i[1] != "Réponse non apprise":
                 print(f"{index}) {Fore.GREEN}{i[0]} / {Fore.GREEN}{i[1]}")
+        attendre_entree()
+        effacer_terminal()
 
     elif choix_action == 2:
         duel(punchlines_joueur, reponses_joueur, punchlines_ennemi_A, reponses_ennemi_A)

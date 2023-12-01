@@ -42,3 +42,6 @@ Cela va faciliter la distribution entre tous les persos.
     1 liste avec toutes les punchlines.
     1 liste avec toutes les réponses.
     1 liste [punchline, réponse]. (Elle permet de savoir vérifier l'issue d'une manche)
+
+Le jeu est en mode textuel, dans le terminal. Avec les fonctions "effacer_terminal()" et "attendre_entree()",
+cela permet d'afficher uniquement ce qui est nécessaire et de rendre le jeu plus lisible.

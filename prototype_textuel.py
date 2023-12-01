@@ -1,27 +1,30 @@
+import sys
 import csv
 import random
+from colorama import Fore, Back, Style, init
 
-# Fonction pour lire les données d'un fichier CSV
-def lire_csv(file_path):
-    donnees_csv = []
+init(autoreset=True)
+
+# Fonction pour lire les données d'un fichier CSV et créer un dictionnaire
+def lire_csv_dictionnaire(file_path):
+    donnees_csv = {}
     with open(file_path, newline='', encoding='utf-8') as csvfile:
         lecteur_csv = csv.reader(csvfile)
         for ligne in lecteur_csv:
-            donnees_csv.append(ligne[0])
+                punchline, reponse = ligne[0], ligne[1]
+                donnees_csv[punchline] = reponse
     return donnees_csv
 
-#region Creation des listes punchlines, reponses et punchlines-reponses
-# Utiliser les données extraites du fichier punchlines.csv
-chemin_fichier_csv = "punchlines.csv"
-punchlines = lire_csv(chemin_fichier_csv)
+#region Creation du dictionnaire punchlines-reponses et des listes punchlines, reponses
 
-# Utiliser les données extraites du fichier reponses.csv
-chemin_fichier_csv = "reponses.csv"
-reponses = lire_csv(chemin_fichier_csv)
-
-# Utiliser les données extraites du fichier punchlines-reponses.csv
+# Utiliser les données extraites du fichier punchlines-reponses.csv pour créer le dictionnaire
 chemin_fichier_csv = "punchlines-reponses.csv"
-punchlines_reponses = lire_csv(chemin_fichier_csv)
+punchlines_reponses = lire_csv_dictionnaire(chemin_fichier_csv)
+
+#Créer les listes punchlines et réponses qui seront distribuées aux ennemis
+punchlines = list(punchlines_reponses.keys())
+reponses = list(punchlines_reponses.values())
+
 #endregion
 
 # Fonction pour sélectionner aléatoirement 3 punchlines parmi la liste punchlines et les retire de la liste
@@ -39,6 +42,7 @@ def selectionner_reponses(reponses, nombre):
     return reponses_selectionnees
 
 #region Distribution des punchlines et des réponses entre les personnages
+
 # Distribution des punchlines
 punchlines_joueur = selectionner_punchlines(punchlines, 3)
 punchlines_ennemi_A = selectionner_punchlines(punchlines, 3)
@@ -50,6 +54,7 @@ reponses_joueur = selectionner_reponses(reponses, 3)
 reponses_ennemi_A = selectionner_reponses(reponses, 3)
 reponses_ennemi_B = selectionner_reponses(reponses, 3)
 reponses_ennemi_C = selectionner_reponses(reponses, 3)
+
 #endregion
 
 ''' Permet d'afficher les punchlines et réponses de chaque personnage (A des fins de déboguage)
@@ -94,24 +99,111 @@ for reponse in reponses_ennemi_C:
 '''
 
 # Fonction pour affronter un ennemi
-def duel(joueur_punchlines, joueur_reponses, ennemi_punchlines):
-    punchline_ennemi = random.choice(ennemi_punchlines)
-    print(f"Ennemi dit : {punchline_ennemi}")
+def duel(joueur_punchlines, joueur_reponses, ennemi_punchlines, ennemi_reponses):
+    compteur_manche = 1
+    score_joueur = 0
+    score_ennemi = 0
+    punchlines_ennemi_non_utilisees = ennemi_punchlines
+    punchlines_ennemi_utilisees = []
 
-    # Vérifier si la punchline ennemie est déjà connue par le joueur
-    if punchline_ennemi not in joueur_punchlines:
-        print("Tu apprends une nouvelle punchline !")
+    while score_joueur < 3 and score_ennemi < 3:
+        print(f"{Fore.YELLOW}--- Manche {compteur_manche} ---")
+        punchline_ennemi = random.choice(punchlines_ennemi_non_utilisees)
+        print(f"{Fore.YELLOW}Ennemi dit : {Fore.RED}{punchline_ennemi}")
+
+        # Vérifier si la punchline ennemie est déjà connue par le joueur
+        if punchline_ennemi not in joueur_punchlines:
+            print(f"{Fore.LIGHTBLUE_EX}Tu apprends une nouvelle punchline !")
+            print()
+            joueur_punchlines.append(punchline_ennemi)
+        else:
+            print(f"{Fore.LIGHTBLUE_EX}Tu connais déjà cette punchline.")
+            print()
+
+        # Obtenir la bonne réponse à partir du dictionnaire punchlines_reponses
+        bonne_reponse = punchlines_reponses.get(punchline_ennemi)
+
+        print(f"{Fore.YELLOW}Que souhaites-tu répondre ?")
         print()
-        joueur_punchlines.append(punchline_ennemi)
+        for index, element in enumerate(joueur_reponses, start=1):
+            print(f"{Fore.YELLOW}{index}) {Fore.CYAN}{element}")
+        print()
+        reponse_joueur = joueur_reponses[int(input(f"{Fore.YELLOW}Réponse : ")) - 1]
+        print()
+
+        # Vérifier si la réponse du joueur est correcte
+        if reponse_joueur == bonne_reponse:
+            print(f"{Fore.GREEN}Bien envoyé !")
+            score_joueur += 1
+            compteur_manche += 1
+            print()
+            print(f"{Fore.CYAN}Joueur : {score_joueur} {Fore.YELLOW}/ {Fore.RED}Ennemi : {score_ennemi}")
+        else:
+            print(f"{Fore.RED}Tu peux mieux faire, tocard.")
+            score_ennemi += 1
+            compteur_manche += 1
+            print()
+            print(f"{Fore.CYAN}Joueur : {score_joueur} {Fore.YELLOW}/ {Fore.RED}Ennemi : {score_ennemi}")
+
+        punchlines_ennemi_non_utilisees.remove(punchline_ennemi)
+        punchlines_ennemi_utilisees.append(punchline_ennemi)
+        print()
+    
+    if score_ennemi == 3:
+        print(f"{Fore.YELLOW}Tu as perdu ce duel...")
+        punchlines_ennemi_non_utilisees.extend(punchlines_ennemi_utilisees)
+        punchlines_ennemi_utilisees.clear()
+    elif score_joueur == 3:
+        print(f"{Fore.YELLOW}Bravo, tu as gagné ce duel !")
+        punchlines_ennemi_non_utilisees.extend(punchlines_ennemi_utilisees)
+        punchlines_ennemi_utilisees.clear()
+
+print()
+print("--- C'est l'heure des PUNCHLINES !!! ---")
+print()
+
+choix_action = 0
+
+while choix_action != 5:
+    #Afficher les options possible
+    choix_action = int(input("Que souhaitez-vous faire ? \n 1) Voir ma liste des punchlines/réponses\n 2) Affronter Ennemi A\n 3) Affronter Ennemi B\n 4) Affronter Ennemi C\n 5) Quitter\nChoix : "))
+
+    #Traitement en fonction des choix
+    if choix_action == 1:
+        punchlines_reponses_connues = []
+
+        for punchline, reponse in punchlines_reponses.items():
+            if punchline in punchlines_joueur and reponse in reponses_joueur:
+                punchlines_reponses_connues.append((punchline, reponse))
+            elif punchline in punchlines_joueur and reponse not in reponses_joueur:
+                punchlines_reponses_connues.append((punchline, "Réponse non apprise"))
+            elif punchline not in punchlines_joueur and reponse in reponses_joueur:
+                punchlines_reponses_connues.append(("Punchline non apprise", reponse))
+            else:
+                punchlines_reponses_connues.append(("Punchline non apprise", "Réponse non apprise"))
+
+        for index, i in enumerate(punchlines_reponses_connues, start=1):
+            if i[0] == "Punchline non apprise" and i[1] == "Réponse non apprise":
+                print(f"{index}) {Fore.RED}{i[0]} / {Fore.RED}{i[1]}")
+            elif i[0] != "Punchline non apprise" and i[1] == "Réponse non apprise":
+                print(f"{index}) {Fore.GREEN}{i[0]} / {Fore.RED}{i[1]}")
+            elif i[0] == "Punchline non apprise" and i[1] != "Réponse non apprise":
+                print(f"{index}) {Fore.RED}{i[0]} / {Fore.GREEN}{i[1]}")
+            elif i[0] != "Punchline non apprise" and i[1] != "Réponse non apprise":
+                print(f"{index}) {Fore.GREEN}{i[0]} / {Fore.GREEN}{i[1]}")
+
+    elif choix_action == 2:
+        duel(punchlines_joueur, reponses_joueur, punchlines_ennemi_A, reponses_ennemi_A)
+
+    elif choix_action == 3:
+        duel(punchlines_joueur, reponses_joueur, punchlines_ennemi_B, reponses_ennemi_B)
+
+    elif choix_action == 4:
+        duel(punchlines_joueur, reponses_joueur, punchlines_ennemi_C, reponses_ennemi_C)
+
+    elif choix_action == 5:
+        print("A bientôt !")
+        sys.exit()
+
     else:
-        print("Tu connais déjà cette punchline.")
-        print()
-
-    print("Que souhaites-tu répondre ?")
-    print()
-    for index, element in enumerate(joueur_reponses, start=1):
-        print(f"{index}) {element}")
-    print()
-    input("Réponse : ")
-
-duel(punchlines_joueur, reponses_joueur, punchlines_ennemi_A)
+        print("Choix invalide. Veuillez réessayer.")

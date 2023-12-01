@@ -7,12 +7,14 @@ Base de données des punchlines-réponses, sous forme de fichier.csv, pour véri
 --- MENU DU JEU ---
 
     Liste des punchlines connues
-        Affiche la liste des punchlines que le joueur connait.
+        Affiche la liste des punchlines / réponses que le joueur connait.
     Choix de l'adversaire
         Choisit un adversaire à affronter parmi 4 adversaires.
         Lance le combat contre cet adversaire après l'avoir choisit.
     Le combat final
         Boss final qui nécessite un grand nombre de punchlines différentes, qu'il faut apprendre auprès des adversaires précédents.
+    Quitter
+        Quitte le programme.
 
 --- LOGIQUE DU JEU ---
 
@@ -26,7 +28,14 @@ Base de données des punchlines-réponses, sous forme de fichier.csv, pour véri
         - Apprendre les punchlines.
         - Apprendre les réponses.
     Le joueur a besoin des réponses pour affronter le boss.
-
+    Lorsque le joueur se sent prêt, il peut affronter le boss.
+    Le boss connait 12 punchlines différentes des autres ennemis, mais les réponses que le joueur connait correspondent aussi aux punchlines du boss.
+    Le boss a toujours l'avantage et ne fait qu'attaquer le joueur, même si ce dernier répond juste.
+    Le boss va envoyer 4 fois 3 punchlines (4 phases). L'intensité du combat augmente au fur et à mesure des phases. (musique)
+    Pour que le joueur avance à la phase suivante, il doit répondre correctement à 2 des 3 punchlines de cette phase.
+    Lorsque le joueur aura réussi les 4 phases du boss, le boss est vulnérable et le joueur n'a qu'une seule chance d'envoyer une punchline au boss.
+    Si le joueur envoie une des 12 punchlines qu'il a apprise contre les autres adversaires, le boss à la bonne réponse, et le combat est perdu.
+    La seule punchline qui bat le joueur est la punchline qu'il a crée au début de la partie.
 
 Il faut 3 listes :
 Cela va faciliter la distribution entre tous les persos.

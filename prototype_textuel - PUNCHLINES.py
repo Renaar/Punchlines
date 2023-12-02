@@ -70,47 +70,6 @@ reponses_ennemi_C = selectionner_reponses(reponses, 3)
 
 #endregion
 
-''' Permet d'afficher les punchlines et réponses de chaque personnage (A des fins de déboguage)
-# Afficher les punchlines et les réponses disponibles
-print("--- Punchlines du joueur ---")
-for punchline in punchlines_joueur:
-    print(f"{punchline}")
-
-print("--- Réponses du joueur ---")
-for reponse in reponses_joueur:
-    print(f"{reponse}")
-
-print()
-
-print("--- Punchlines de l'ennemi A ---")
-for punchline in punchlines_ennemi_A:
-    print(f"{punchline}")
-
-print("--- Réponses de l'ennemi A ---")
-for reponse in reponses_ennemi_A:
-    print(f"{reponse}")    
-
-print()
-
-print("--- Punchlines de l'ennemi B ---")
-for punchline in punchlines_ennemi_B:
-    print(f"{punchline}")
-
-print("--- Réponses de l'ennemi B ---")
-for reponse in reponses_ennemi_B:
-    print(f"{reponse}")  
-
-print()
-
-print("--- Punchlines de l'ennemi C ---")
-for punchline in punchlines_ennemi_C:
-    print(f"{punchline}")
-
-print("--- Réponses de l'ennemi C ---")
-for reponse in reponses_ennemi_C:
-    print(f"{reponse}")
-'''
-
 # Fonction pour affronter un ennemi
 def duel(joueur_punchlines, joueur_reponses, ennemi_punchlines, ennemi_reponses):
     punchlines_ennemi_non_utilisees = ennemi_punchlines
@@ -119,6 +78,7 @@ def duel(joueur_punchlines, joueur_reponses, ennemi_punchlines, ennemi_reponses)
     score_ennemi = 0
     compteur_manche = 1
 
+    # Phase où l'ennemi a l'avantage et envoie une punchline. Le joueur doit répondre.
     def avantage_ennemi():
         nonlocal score_joueur
         nonlocal score_ennemi
@@ -203,6 +163,7 @@ def duel(joueur_punchlines, joueur_reponses, ennemi_punchlines, ennemi_reponses)
             attendre_entree()
             boucle_principale_jeu()
 
+    # Phase où le joueur a l'avantage et envoie une punchline. L'ennemi doit répondre.
     def avantage_joueur():
         nonlocal score_joueur
         nonlocal score_ennemi
@@ -279,7 +240,17 @@ def duel(joueur_punchlines, joueur_reponses, ennemi_punchlines, ennemi_reponses)
             attendre_entree()
             boucle_principale_jeu()
     
+    print(f"{Fore.YELLOW}C'est l'heure... du.... {Fore.RED}DU {Fore.BLUE}DU {Fore.GREEN}DU {Fore.MAGENTA}DU{Fore.BLACK}DU{Fore.WHITE}DU... {Fore.RED}DUEL !")
+    print()
+    attendre_entree()
     avantage_ennemi()
+
+def fin_jeu():
+    print()
+    print(f"{Fore.GREEN}BIEN JOUÉ ! Vous avez appris toutes les punchlines et toutes les réponses !\n\nMerci d'avoir joué et à bientôt !")
+    print()
+    attendre_entree()
+    sys.exit()
 
 # Boucle principale du jeu
 def boucle_principale_jeu():
@@ -291,17 +262,21 @@ def boucle_principale_jeu():
     reponses_apprises = len(reponse_dans_dictionnaire)
 
     effacer_terminal()
-    print()
-    print("--- PUNCHLINES ---")
+    print(f"{Fore.RED}--- PUNCHLINES ---")
     print()
     choix_action = 0
     while choix_action != 5:
         #Afficher les options possible
         print(f"{Fore.GREEN}Victoires : {compteur_victoires} / {Fore.RED}Défaites : {compteur_defaites}")
         print()
-        print(f"Punchlines apprises : {punchlines_apprises} / 12\nRéponses apprises : {reponses_apprises} / 12")
+        if punchlines_apprises != 12 and reponses_apprises != 12:
+            print(f"Punchlines apprises : {punchlines_apprises} / 12\nRéponses apprises : {reponses_apprises} / 12")
+        elif punchlines_apprises == 12 and reponses_apprises != 12:
+            print(f"{Fore.GREEN}Vous avez appris toutes les punchlines !\n{Fore.WHITE}Réponses apprises : {reponses_apprises} / 12")
+        else:
+            fin_jeu()
         print()
-        choix_action = int(input("Que souhaitez-vous faire ? \n\n 1) Voir ma liste des punchlines/réponses\n 2) Affronter Ennemi A\n 3) Affronter Ennemi B\n 4) Affronter Ennemi C\n 5) Quitter\n\nChoix : "))
+        choix_action = int(input(f"{Fore.YELLOW}Que souhaitez-vous faire ? \n\n {Fore.CYAN}1) Voir ma liste des punchlines/réponses\n {Fore.RED}2) Affronter Ennemi A\n 3) Affronter Ennemi B\n 4) Affronter Ennemi C\n {Fore.MAGENTA}5) Quitter\n\n{Fore.YELLOW}Choix : "))
         print()
         #Traitement en fonction des choix
         if choix_action == 1:

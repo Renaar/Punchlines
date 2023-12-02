@@ -108,68 +108,130 @@ for reponse in reponses_ennemi_C:
 
 # Fonction pour affronter un ennemi
 def duel(joueur_punchlines, joueur_reponses, ennemi_punchlines, ennemi_reponses):
-    compteur_manche = 1
-    score_joueur = 0
-    score_ennemi = 0
     punchlines_ennemi_non_utilisees = ennemi_punchlines
     punchlines_ennemi_utilisees = []
+    score_joueur = 0
+    score_ennemi = 0
 
-    while score_joueur < 3 and score_ennemi < 3:
-        effacer_terminal()
-        print(f"{Fore.YELLOW}--- Manche {compteur_manche} ---")
-        punchline_ennemi = random.choice(punchlines_ennemi_non_utilisees)
-        print(f"{Fore.YELLOW}Ennemi dit : {Fore.RED}{punchline_ennemi}")
+    def avantage_ennemi():
+        nonlocal score_joueur
+        nonlocal score_ennemi
 
-        # Vérifier si la punchline ennemie est déjà connue par le joueur
-        if punchline_ennemi not in joueur_punchlines:
-            print(f"{Fore.LIGHTBLUE_EX}Tu apprends une nouvelle punchline !")
+        if score_joueur < 3 or score_ennemi < 3:
+            # Ennemi a l'avantage et envoie une punchline
+            effacer_terminal()
+            punchline_ennemi = random.choice(punchlines_ennemi_non_utilisees)
+            print(f"{Fore.YELLOW}Ennemi dit : {Fore.RED}{punchline_ennemi}")
+
+            # Vérifier si la punchline ennemie est déjà connue par le joueur
+            if punchline_ennemi not in joueur_punchlines:
+                print(f"{Fore.LIGHTBLUE_EX}Tu apprends une nouvelle punchline !")
+                joueur_punchlines.append(punchline_ennemi)
+            else:
+                print(f"{Fore.LIGHTBLUE_EX}Tu connais déjà cette punchline.")
+
+            # Obtenir la bonne réponse à partir du dictionnaire punchlines_reponses
+            bonne_reponse = punchlines_reponses.get(punchline_ennemi)
+
+            # Joueur répond à la punchline de l'ennemi
+            print(f"{Fore.YELLOW}Que souhaites-tu répondre ?")
             print()
-            joueur_punchlines.append(punchline_ennemi)
-        else:
-            print(f"{Fore.LIGHTBLUE_EX}Tu connais déjà cette punchline.")
+            for index, element in enumerate(joueur_reponses, start=1):
+                print(f"{Fore.YELLOW}{index}) {Fore.CYAN}{element}")
+            print()
+            reponse_joueur = joueur_reponses[int(input(f"{Fore.YELLOW}Réponse : ")) - 1]
             print()
 
-        # Obtenir la bonne réponse à partir du dictionnaire punchlines_reponses
-        bonne_reponse = punchlines_reponses.get(punchline_ennemi)
+            # Vérifier si la réponse du joueur est correcte
+            if reponse_joueur == bonne_reponse:
+                print(f"{Fore.GREEN}Bien joué ! Tu as maintenant l'avantage.")
+                score_joueur += 1
+                punchlines_ennemi_non_utilisees.remove(punchline_ennemi)
+                punchlines_ennemi_utilisees.append(punchline_ennemi)
+                print(f"{Fore.CYAN}Joueur : {score_joueur} {Fore.YELLOW}/ {Fore.RED}Ennemi : {score_ennemi}")
+                attendre_entree()
+                avantage_joueur()
 
-        print(f"{Fore.YELLOW}Que souhaites-tu répondre ?")
-        print()
-        for index, element in enumerate(joueur_reponses, start=1):
-            print(f"{Fore.YELLOW}{index}) {Fore.CYAN}{element}")
-        print()
-        reponse_joueur = joueur_reponses[int(input(f"{Fore.YELLOW}Réponse : ")) - 1]
-        print()
+            else:
+                print(f"{Fore.RED}Tu as mal répondu, l'ennemi garde l'avantage.")
+                score_ennemi += 1
+                punchlines_ennemi_non_utilisees.remove(punchline_ennemi)
+                punchlines_ennemi_utilisees.append(punchline_ennemi)
+                print(f"{Fore.CYAN}Joueur : {score_joueur} {Fore.YELLOW}/ {Fore.RED}Ennemi : {score_ennemi}")
+                attendre_entree()
+                avantage_ennemi()
 
-        # Vérifier si la réponse du joueur est correcte
-        if reponse_joueur == bonne_reponse:
-            print(f"{Fore.GREEN}Bien envoyé !")
-            score_joueur += 1
-            compteur_manche += 1
+        elif score_ennemi == 3:
+            print(f"{Fore.YELLOW}Tu as perdu ce duel...")
+            punchlines_ennemi_non_utilisees.extend(punchlines_ennemi_utilisees)
+            punchlines_ennemi_utilisees.clear()
+            effacer_terminal()
+            
+        elif score_joueur == 3:
+            print(f"{Fore.YELLOW}Bravo, tu as gagné ce duel !")
+            punchlines_ennemi_non_utilisees.extend(punchlines_ennemi_utilisees)
+            punchlines_ennemi_utilisees.clear()
+            effacer_terminal()
+
+    def avantage_joueur():
+        nonlocal score_joueur
+        nonlocal score_ennemi
+
+        if score_joueur < 3 or score_ennemi < 3:
+            effacer_terminal()
+            # Joueur a l'avantage et choisit la punchline à envoyer
+            print(f"{Fore.YELLOW}Choisis ta prochaine punchline :")
+            for index, punchline in enumerate(joueur_punchlines, start=1):
+                print(f"{Fore.YELLOW}{index}) {Fore.CYAN}{punchline}")
             print()
-            print(f"{Fore.CYAN}Joueur : {score_joueur} {Fore.YELLOW}/ {Fore.RED}Ennemi : {score_ennemi}")
-            attendre_entree()
-        else:
-            print(f"{Fore.RED}Tu peux mieux faire, tocard.")
-            score_ennemi += 1
-            compteur_manche += 1
-            print()
-            print(f"{Fore.CYAN}Joueur : {score_joueur} {Fore.YELLOW}/ {Fore.RED}Ennemi : {score_ennemi}")
-            attendre_entree()
+            punchline_joueur = joueur_punchlines[int(input(f"{Fore.YELLOW}Punchline : ")) - 1]
+            print(f"{Fore.CYAN}Joueur dit : {Fore.CYAN}{punchline_joueur}")
 
-        punchlines_ennemi_non_utilisees.remove(punchline_ennemi)
-        punchlines_ennemi_utilisees.append(punchline_ennemi)
+            # Obtenir la bonne réponse à partir du dictionnaire punchlines_reponses
+            bonne_reponse = punchlines_reponses.get(punchline_joueur)
+
+            # Ennemi répond à la punchline du joueur
+            if bonne_reponse in ennemi_reponses:
+                reponse_ennemi = bonne_reponse
+                print(f"{Fore.YELLOW}Ennemi répond : {Fore.RED}{reponse_ennemi}")
+                score_ennemi += 1
+                if reponse_ennemi not in joueur_reponses:
+                    print(f"{Fore.LIGHTBLUE_EX}Tu apprends une nouvelle réponse !")
+                    joueur_reponses.append(reponse_ennemi)
+
+                else:
+                    print(f"{Fore.LIGHTBLUE_EX}Tu connais déjà cette réponse.")
+
+                print(f"{Fore.RED}Dommage, l'ennemi t'as eu. Il reprend l'avantage.")
+                print(f"{Fore.CYAN}Joueur : {score_joueur} {Fore.YELLOW}/ {Fore.RED}Ennemi : {score_ennemi}")
+                attendre_entree()
+                effacer_terminal()
+                avantage_ennemi()
+
+            else:
+                print(f"{Fore.RED}Euuuh... Ah ouais ?!")
+                score_joueur += 1
+                print(f"{Fore.GREEN}Bien joué, l'ennemi ne sait pas quoi répondre. Tu gardes l'avantage.")
+                print(f"{Fore.CYAN}Joueur : {score_joueur} {Fore.YELLOW}/ {Fore.RED}Ennemi : {score_ennemi}")
+                attendre_entree()
+                effacer_terminal()
+                avantage_joueur()
+
+        elif score_ennemi == 3:
+            print(f"{Fore.YELLOW}Tu as perdu ce duel...")
+            punchlines_ennemi_non_utilisees.extend(punchlines_ennemi_utilisees)
+            punchlines_ennemi_utilisees.clear()
+            effacer_terminal()
+
+        elif score_joueur == 3:
+            print(f"{Fore.YELLOW}Bravo, tu as gagné ce duel !")
+            punchlines_ennemi_non_utilisees.extend(punchlines_ennemi_utilisees)
+            punchlines_ennemi_utilisees.clear()
+            effacer_terminal()
     
-    if score_ennemi == 3:
-        print(f"{Fore.YELLOW}Tu as perdu ce duel...")
-        punchlines_ennemi_non_utilisees.extend(punchlines_ennemi_utilisees)
-        punchlines_ennemi_utilisees.clear()
-        effacer_terminal()
+    avantage_ennemi()
 
-    elif score_joueur == 3:
-        print(f"{Fore.YELLOW}Bravo, tu as gagné ce duel !")
-        punchlines_ennemi_non_utilisees.extend(punchlines_ennemi_utilisees)
-        punchlines_ennemi_utilisees.clear()
-        effacer_terminal()
+    #compteur_manche = 1
 
 effacer_terminal()
 print("--- C'est l'heure des PUNCHLINES !!! ---")

@@ -11,8 +11,6 @@ Base de données des punchlines-réponses, sous forme de fichier.csv, pour véri
     Choix de l'adversaire
         Choisit un adversaire à affronter parmi 4 adversaires.
         Lance le combat contre cet adversaire après l'avoir choisit.
-    Le combat final
-        Boss final qui nécessite un grand nombre de punchlines différentes, qu'il faut apprendre auprès des adversaires précédents.
     Quitter
         Quitte le programme.
 
@@ -27,8 +25,7 @@ Base de données des punchlines-réponses, sous forme de fichier.csv, pour véri
     Le joueur passe par plusieurs phases :
         - Apprendre les punchlines.
         - Apprendre les réponses.
-    Le joueur a besoin des réponses pour affronter le boss.
-    Lorsque le joueur se sent prêt, il peut affronter le boss.
+    Lorsque le joueur a appris toutes les punchlines et toutes les réponses, le combat contre le boss se lance.
     Le boss connait 12 punchlines différentes des autres ennemis, mais les réponses que le joueur connait correspondent aussi aux punchlines du boss.
     Le boss a toujours l'avantage et ne fait qu'attaquer le joueur, même si ce dernier répond juste.
     Le boss va envoyer 4 fois 3 punchlines (4 phases). L'intensité du combat augmente au fur et à mesure des phases. (musique)

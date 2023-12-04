@@ -35,7 +35,7 @@ Base de données des punchlines-réponses, sous forme de fichier.csv, pour véri
     Pour que le joueur avance à la phase suivante, il doit répondre correctement à 2 des 3 punchlines de cette phase.
     Lorsque le joueur aura réussi les 4 phases du boss, le boss est vulnérable et le joueur n'a qu'une seule chance d'envoyer une punchline au boss.
     Si le joueur envoie une des 12 punchlines qu'il a apprise contre les autres adversaires, le boss à la bonne réponse, et le combat est perdu.
-    La seule punchline qui bat le joueur est la punchline qu'il a crée au début de la partie.
+    La seule punchline qui bat le boss est la punchline que le joueur a crée au début de la partie.
 
 Il faut 3 listes :
 Cela va faciliter la distribution entre tous les persos.

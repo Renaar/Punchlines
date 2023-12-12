@@ -54,7 +54,7 @@ def selectionner_reponses(reponses, nombre):
         reponses.remove(i)
     return reponses_selectionnees
 
-#region Distribution des punchlines et des réponses entre les personnages
+#region Distribution des punchlines et des réponses entre le joueur et les ennemis
 
 # Distribution des punchlines
 punchlines_joueur = selectionner_punchlines(punchlines, 3)
@@ -72,6 +72,7 @@ reponses_ennemi_C = selectionner_reponses(reponses, 3)
 
 # Fonction pour affronter un ennemi
 def duel(joueur_punchlines, joueur_reponses, ennemi_punchlines, ennemi_reponses):
+    # Création de 2 listes pour savoir quelles punchlines l'ennemi a utilisé ou non
     punchlines_ennemi_non_utilisees = ennemi_punchlines
     punchlines_ennemi_utilisees = []
     score_joueur = 0
@@ -93,8 +94,8 @@ def duel(joueur_punchlines, joueur_reponses, ennemi_punchlines, ennemi_reponses)
             print()
             punchline_ennemi = random.choice(punchlines_ennemi_non_utilisees)
             print(f"{Fore.YELLOW}Ennemi dit : {Fore.RED}{punchline_ennemi}")
+            
             # Vérifier si la punchline ennemie est déjà connue par le joueur
-
             if punchline_ennemi not in joueur_punchlines:
                 print(f"{Fore.LIGHTBLUE_EX}Tu apprends une nouvelle punchline !")
                 joueur_punchlines.append(punchline_ennemi)
@@ -105,6 +106,7 @@ def duel(joueur_punchlines, joueur_reponses, ennemi_punchlines, ennemi_reponses)
 
             # Obtenir la bonne réponse à partir du dictionnaire punchlines_reponses
             bonne_reponse = punchlines_reponses.get(punchline_ennemi)
+
             # Joueur répond à la punchline de l'ennemi
             print(f"{Fore.YELLOW}Que souhaites-tu répondre ?")
             print()
@@ -174,6 +176,7 @@ def duel(joueur_punchlines, joueur_reponses, ennemi_punchlines, ennemi_reponses)
         if score_joueur != 3 and score_ennemi != 3:
             print(f"{Fore.YELLOW}--- Manche {compteur_manche} ---")
             print()
+
             # Joueur a l'avantage et choisit la punchline à envoyer
             effacer_terminal()
             print(f"{Fore.YELLOW}Tu as l'avantage !")
@@ -185,8 +188,10 @@ def duel(joueur_punchlines, joueur_reponses, ennemi_punchlines, ennemi_reponses)
             print()
             print(f"{Fore.YELLOW}Joueur dit : {Fore.CYAN}{punchline_joueur}")
             print()
+
             # Obtenir la bonne réponse à partir du dictionnaire punchlines_reponses
             bonne_reponse = punchlines_reponses.get(punchline_joueur)
+
             # Ennemi répond à la punchline du joueur
             if bonne_reponse in ennemi_reponses:
                 reponse_ennemi = bonne_reponse
@@ -245,6 +250,7 @@ def duel(joueur_punchlines, joueur_reponses, ennemi_punchlines, ennemi_reponses)
     attendre_entree()
     avantage_ennemi()
 
+# Fonction qui termine le jeu
 def fin_jeu():
     print()
     print(f"{Fore.GREEN}BIEN JOUÉ ! Vous avez appris toutes les punchlines et toutes les réponses !\n\nMerci d'avoir joué et à bientôt !")
@@ -278,7 +284,9 @@ def boucle_principale_jeu():
         print()
         choix_action = int(input(f"{Fore.YELLOW}Que souhaitez-vous faire ? \n\n {Fore.CYAN}1) Voir ma liste des punchlines/réponses\n {Fore.RED}2) Affronter Ennemi A\n 3) Affronter Ennemi B\n 4) Affronter Ennemi C\n {Fore.MAGENTA}5) Quitter\n\n{Fore.YELLOW}Choix : "))
         print()
-        #Traitement en fonction des choix
+
+        # Traitement en fonction des choix
+        # Cette action permet d'afficher la liste des punchlines et des réponses que le joueur connait
         if choix_action == 1:
             punchlines_reponses_connues = []
             effacer_terminal()
@@ -307,15 +315,19 @@ def boucle_principale_jeu():
             attendre_entree()
             effacer_terminal()
 
+        # Affronte l'ennemi A
         elif choix_action == 2:
             duel(punchlines_joueur, reponses_joueur, punchlines_ennemi_A, reponses_ennemi_A)
 
+        # Affronte l'ennemi B
         elif choix_action == 3:
             duel(punchlines_joueur, reponses_joueur, punchlines_ennemi_B, reponses_ennemi_B)
 
+        # Affronte l'ennemi C
         elif choix_action == 4:
             duel(punchlines_joueur, reponses_joueur, punchlines_ennemi_C, reponses_ennemi_C)
 
+        # Quitte le jeu
         elif choix_action == 5:
             print("A bientôt !")
             sys.exit()
